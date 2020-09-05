@@ -27,7 +27,8 @@ function Insert_record()
                      method : 'post',
                      data : {UName:User,UEmail:Email},
                      success : function(data)
-                     {                      
+                     {       
+                                        
                          $('#message').html(data);
                          $('#Registration').modal('hide');
                          $('form').trigger('reset');
@@ -112,7 +113,7 @@ function block_record()
                     data : {block_id:block_id,loged_in_user_id:loged_in_user_id},
                     success: function(data)
                     { 
-                                             
+                         alert(1);                    
                         $('#block-message').html(data).hide(5000);
                         location.reload();
                         view_record();
