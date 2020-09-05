@@ -56,13 +56,13 @@ function view_record()
             method: 'post',            
             success: function(data)
             {
-                console.log(data);
-                alert(1);
-                data = $.parseJSON(data);
-                if(data.status=='success')
-                {
-                    $('#table').html(data.html);                    
-                }
+                // console.log(data);
+                // alert(1);
+                // data = $.parseJSON(data);
+                // if(data.status=='success')
+                // {
+                //     $('#table').html(data.html);                    
+                // }
             }
 
         }
@@ -111,42 +111,12 @@ function block_record()
                     method : 'post',
                     data : {B_ID:Block_ID,B_ID2:Block_ID2},
                     success: function(data)
-                    {
-                        alert(4);
+                    {                       
                         $('#block-message').html(data).hide(5000);
                         location.reload();
                         view_record();
                     }
-                }
-            )
-        }
-        )
-    }
-    
-
-    )
-    
+                })
+        })
+    })    
 }
-
-function view_record2()
-{
-    
-    $.ajax(
-        {
-            url: 'view2.php',
-            method: 'post',            
-            success: function(data)
-            {
-                data = $.parseJSON(data);
-                if(data.status=='success')
-                {
-                    $('#table').html(data.html);                    
-                }
-            }
-
-        }
-    )
-}
-
-
-

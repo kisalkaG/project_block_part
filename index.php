@@ -64,13 +64,13 @@
        <div class="modal-dialog">
           <div class="modal-content">
           <div class="modal-header">
-             <h3 class="text-dark">Block Record</h3>
+             <h3 class="text-dark">Block/Unblock Record</h3>
           </div>
           <div class="modal-body">
           <p id="block-message" class="text-dark"></p>
           <input type="hidden" class="form-control my-2" placeholder="User Email" id="Up_Block_ID">  
-          <p>Do you want to Block the Record?</p>
-                <button type="button" class="btn btn-success" id="btn_block_record">Block Now</button>
+          <p>Do you want to Block/Unblock the Record?</p>
+                <button type="button" class="btn btn-success" id="btn_block_record">Block/Unblock</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" id="btn_close">Close</button>
           </div>
              
