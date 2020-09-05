@@ -111,7 +111,8 @@ function block_record()
                     method : 'post',
                     data : {block_id:block_id,loged_in_user_id:loged_in_user_id},
                     success: function(data)
-                    {                       
+                    { 
+                                             
                         $('#block-message').html(data).hide(5000);
                         location.reload();
                         view_record();

@@ -85,12 +85,7 @@
      }       
 
      function block_record()
-     {
-        // "<pre>";
-        // print_r($_POST);
-        //  die();
-        //  "</pre>";
-
+     {   
          global $con;
          $result= '';
          $block_id = $_POST['block_id'];
@@ -101,10 +96,46 @@
          $select_result = mysqli_query($con,$select_query);
          $row = mysqli_fetch_assoc($select_result);
 
+          //Update user table
+          $block_user_ids=[]; 
+          $updated_user_ids=[];
+          $user_query= "select block_user_ids from users where id='$loged_in_user_id'";
+          $user_result =mysqli_query($con,$user_query);
+          $user_row = mysqli_fetch_assoc($user_result);         
+    
+
+        if(strlen($user_row['block_user_ids']) != 0)
+        {        
+        foreach(explode(',', $user_row['block_user_ids']) as $block_user_id)
+        {
+            
+            array_push($block_user_ids,$block_user_id);
+        }
+        }
+
          if($row['is_blocked']==1)
          {
-            $query = "update friend_list set is_blocked=false where id=' $block_id'";
+            //Update friend list 
+            $query = "update friend_list set is_blocked = false where id =' $block_id'";
             $result = mysqli_query($con,$query);
+            $user_update_query = "update users set block_user_ids = null where id =' $loged_in_user_id'";
+            $user_update_result = mysqli_query($con,$user_update_query);
+            
+            foreach($block_user_ids as $block_user_id)
+            {
+                if($block_user_id != $block_id)
+                {
+                    array_push($updated_user_ids,$block_user_id);
+
+                }
+            }
+            
+            $serialized_array = implode(',',$updated_user_ids);         
+
+            $user_updated_query2 = "update users set block_user_ids = '$serialized_array' where id = '$loged_in_user_id'";
+            $user_update_result2 = mysqli_query($con,$user_updated_query2);          
+
+           
 
             if($result)
                 {
@@ -118,6 +149,31 @@
          {
             $query = "update friend_list set is_blocked=true where id=' $block_id'";
             $result = mysqli_query($con,$query);
+
+            $user_update_query = "update users set block_user_ids = null where id =' $loged_in_user_id'";
+            $user_update_result = mysqli_query($con,$user_update_query);
+           
+            if( empty($block_user_ids))
+                {
+                    array_push($updated_user_ids,$block_id);
+
+                }else
+                {
+            
+                    foreach($block_user_ids as $block_user_id)
+                    {
+                        if(!in_array($block_id, $block_user_ids))
+                        {
+                            array_push($updated_user_ids,$block_id);
+
+                        }                
+            }
+            }
+            
+            $serialized_array = implode(',',$updated_user_ids);             
+
+            $user_updated_query2 = "update users set block_user_ids = '$serialized_array' where id = '$loged_in_user_id'";
+            $user_update_result2 = mysqli_query($con,$user_updated_query2);
 
             if($result)
                 {
