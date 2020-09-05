@@ -99,8 +99,8 @@ function block_record()
    
     $(document).on('click','#btn_block',function()
     {               
-        var Block_ID = $(this).attr('data-id2');
-        var Block_ID2 = 2;//here we need to pass loged user id    
+        var block_id = $(this).attr('data-id2');
+        var loged_in_user_id = 2;//here we need to pass loged user id    
         $('#block').modal('show');       
 
         $(document).on('click','#btn_block_record',function()
@@ -109,7 +109,7 @@ function block_record()
                 {
                     url : 'block.php',
                     method : 'post',
-                    data : {B_ID:Block_ID,B_ID2:Block_ID2},
+                    data : {block_id:block_id,loged_in_user_id:loged_in_user_id},
                     success: function(data)
                     {                       
                         $('#block-message').html(data).hide(5000);

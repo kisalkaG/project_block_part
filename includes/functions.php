@@ -46,7 +46,7 @@
                 <td> '.$row['UserName'].' </td>
                 <td> '.$row['UserEmail'].' </td>                            
                
-                <td> <button class="btn btn-danger" id="btn_block" data-id2='.$row['id'].'>Block</button> </td>                    
+                <td> <button class="btn btn-danger" id="btn_block" data-id2='.$row['id'].'>Unblock</button> </td>                    
             </tr>';
             }else{
                 $value.=  '<tr>
@@ -93,17 +93,17 @@
 
          global $con;
          $result= '';
-         $Block_ID = $_POST['B_ID'];
-         $Block_ID2 = $_POST['B_ID2'];
+         $block_id = $_POST['block_id'];
+         $loged_in_user_id = $_POST['loged_in_user_id'];
 
          //check is user already blocked
-         $select_query = "select * from friend_list where id='$Block_ID'";
+         $select_query = "select * from friend_list where id='$block_id'";
          $select_result = mysqli_query($con,$select_query);
          $row = mysqli_fetch_assoc($select_result);
 
          if($row['is_blocked']==1)
          {
-            $query = "update friend_list set is_blocked=false where id=' $Block_ID'";
+            $query = "update friend_list set is_blocked=false where id=' $block_id'";
             $result = mysqli_query($con,$query);
 
             if($result)
@@ -116,7 +116,7 @@
                 }
          }else
          {
-            $query = "update friend_list set is_blocked=true where id=' $Block_ID'";
+            $query = "update friend_list set is_blocked=true where id=' $block_id'";
             $result = mysqli_query($con,$query);
 
             if($result)
