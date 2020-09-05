@@ -11,7 +11,7 @@ $(document).ready(function()
 function Insert_record()
 {
      $(document).on('click','#btn_register',function()
-     {
+     {        
          var User = $('#UserName').val();
          var Email = $('#UserEmail').val();
          
@@ -27,7 +27,7 @@ function Insert_record()
                      method : 'post',
                      data : {UName:User,UEmail:Email},
                      success : function(data)
-                     {
+                     {                      
                          $('#message').html(data);
                          $('#Registration').modal('hide');
                          $('form').trigger('reset');
@@ -56,6 +56,8 @@ function view_record()
             method: 'post',            
             success: function(data)
             {
+                console.log(data);
+                alert(1);
                 data = $.parseJSON(data);
                 if(data.status=='success')
                 {
@@ -94,16 +96,15 @@ function get_record()
 
 function block_record()
 {
+   
     $(document).on('click','#btn_block',function()
-    {
-        
+    {               
         var Block_ID = $(this).attr('data-id2');
-        var Block_ID2 = 21;
-        $('#block').modal('show');
-        
+        var Block_ID2 = 2;//here we need to pass loged user id    
+        $('#block').modal('show');       
 
         $(document).on('click','#btn_block_record',function()
-        {
+        {            
             $.ajax (
                 {
                     url : 'block.php',
@@ -111,6 +112,7 @@ function block_record()
                     data : {B_ID:Block_ID,B_ID2:Block_ID2},
                     success: function(data)
                     {
+                        alert(4);
                         $('#block-message').html(data).hide(5000);
                         location.reload();
                         view_record();

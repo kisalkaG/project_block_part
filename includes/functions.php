@@ -4,33 +4,26 @@
 
   
      function InsertRecord()
-     {
-        //   var_dump(1);
-         //var_dump($_POST);
-         
-         
-         
+     {          
          global $con;
          $UserName = $_POST['UName'];
-         $UserEmail = $_POST['UEmail'];
+         $UserEmail = $_POST['UEmail'];         
          
-         
-         $query = "insert into user_record (UserName, UserEmail) values('$UserName','$UserEmail')";
-         $result = mysqli_query($con,$query);
-
+         $query = "insert into friend_list (UserName, UserEmail,is_blocked) values('$UserName','$UserEmail','false')";        
+         $result = mysqli_query($con,$query);        
+        
          if($result)
-         {
+         {            
              echo 'Your Record Has Been Saved In The Database';
          }
          else
-         {
+         {            
              echo 'Please Check Your Query';
          }
      }
 
      function display_record()
-     {
-         
+     {         
          global $con;
          $value = "";
          $value='<div class="container"><table class="table table-bordered">
@@ -40,18 +33,32 @@
                         <td> User Email </td>                        
                         <td> Block </td>                      
                     </tr>';
-        $query = "select * from user_record ";
+        $query = "SELECT id,UserName,UserEmail,is_blocked FROM friend_list";
+                
         $result = mysqli_query($con,$query);
 
         while($row=mysqli_fetch_assoc($result))
         {
-            $value.=  '<tr>
-                            <td> '.$row['id'].' </td>
-                            <td> '.$row['UserName'].' </td>
-                            <td> '.$row['UserEmail'].' </td>
-                           
-                            <td> <button class="btn btn-danger" id="btn_block" data-id2='.$row['id'].'>Block</button> </td>                    
-                        </tr>';
+            if($row['is_blocked']==1)
+            {
+                $value.=  '<tr>
+                <td> '.$row['id'].' </td>
+                <td> '.$row['UserName'].' </td>
+                <td> '.$row['UserEmail'].' </td>                            
+               
+                <td> <button class="btn btn-primary" id="btn_block" data-id2='.$row['id'].'>Block</button> </td>                    
+            </tr>';
+            }else{
+                $value.=  '<tr>
+                <td> '.$row['id'].' </td>
+                <td> '.$row['UserName'].' </td>
+                <td> '.$row['UserEmail'].' </td>                            
+               
+                <td> <button class="btn btn-danger" id="btn_block" data-id2='.$row['id'].'>Block</button> </td>                    
+            </tr>';  
+            };
+           
+           
         }
 
         $value.='</table></div>';
@@ -63,7 +70,7 @@
      {
          global $con;
          $UserID = $_POST['UserID'];
-         $query = "select * from user_record where id='$UserID'";
+         $query = "select * from friend_list where id='$UserID'";
          $result = mysqli_query($con,$query);
          
          $User_data = array();
@@ -79,10 +86,15 @@
 
      function block_record()
      {
+        "<pre>";
+        print_r($_POST);
+         die();
+         "</pre>";
+
          global $con;
          $Block_ID = $_POST['B_ID'];
          $Block_ID2 = $_POST['B_ID2'];
-         $query = "update user_record set block=' $Block_ID'where id=' $Block_ID2'";
+         $query = "update friend_list set is_blocked=true where id=' $Block_ID'";
          $result = mysqli_query($con,$query);
 
          if($result)
@@ -108,7 +120,7 @@
                         <td> User Email </td>
                                             
                     </tr>';
-        $query = "select * from user_record";
+        $query = "select * from friend_list";
         $result = mysqli_query($con,$query);
 
         while($row=mysqli_fetch_assoc($result))
