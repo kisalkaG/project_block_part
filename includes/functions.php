@@ -56,25 +56,7 @@ function display_record()
 
     $value .= '</table></div>';
     echo $value;
-    // echo json_encode(['status'=>'success','html'=>$value]);
 }
-
-function get_record()
-{
-    global $con;
-    $UserID = $_POST['UserID'];
-    $query = "select * from friend_list where id='$UserID'";
-    $result = mysqli_query($con, $query);
-
-    $User_data = array();
-    while ($row = mysqli_fetch_assoc($result)) {
-        $User_data[0] = $row['id'];
-        $User_data[1] = $row['UserName'];
-        $User_data[2] = $row['UserEmail'];
-    }
-    echo json_encode($User_data);
-}
-
 function block_record()
 {
     global $con;
@@ -88,16 +70,15 @@ function block_record()
     $row = mysqli_fetch_assoc($select_result);
 
     //Update user table
-    $block_user_ids = [];
-    $updated_user_ids = [];
+    $block_user_ids = []; //current block ids
+    $updated_user_ids = []; //current block id+new block ids
+
     $user_query = "select block_user_ids from users where id='$loged_in_user_id'";
     $user_result = mysqli_query($con, $user_query);
     $user_row = mysqli_fetch_assoc($user_result);
 
-
     if (strlen($user_row['block_user_ids']) != 0) {
         foreach (explode(',', $user_row['block_user_ids']) as $block_user_id) {
-
             array_push($block_user_ids, $block_user_id);
         }
     }
@@ -120,8 +101,6 @@ function block_record()
         $user_updated_query2 = "update users set block_user_ids = '$serialized_array' where id = '$loged_in_user_id'";
         $user_update_result2 = mysqli_query($con, $user_updated_query2);
 
-
-
         if ($result) {
             echo 'Record Has Been Unblocked';
         } else {
@@ -140,18 +119,13 @@ function block_record()
         } else {
 
             foreach ($block_user_ids as $block_user_id) {
-                if (!in_array($block_id, $updated_user_ids)) {
-                    array_push($updated_user_ids, $block_id);
-                    
+                if (!in_array($block_id, $block_user_ids)) {
+                    array_push($block_user_ids, $block_id);
                 }
             }
+            $updated_user_ids = $block_user_ids;
             $serialized_array = implode(',', $updated_user_ids);
         }
-
-         var_dump($block_user_ids,$updated_user_ids,$serialized_array);
-         die();
-        
-
         $user_updated_query2 = "update users set block_user_ids = '$serialized_array' where id = '$loged_in_user_id'";
         $user_update_result2 = mysqli_query($con, $user_updated_query2);
 
