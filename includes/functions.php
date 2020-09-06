@@ -111,13 +111,12 @@ function block_record()
         $result = mysqli_query($con, $query);
 
         $user_update_query = "update users set block_user_ids = null where id =' $loged_in_user_id'";
-        $user_update_result = mysqli_query($con, $user_update_query);
+        $user_update_result = mysqli_query($con, $user_update_query);        
 
         if (empty($block_user_ids)) {
             array_push($updated_user_ids, $block_id);
-            $serialized_array = $updated_user_ids;
+            $serialized_array = $updated_user_ids[0];           
         } else {
-
             foreach ($block_user_ids as $block_user_id) {
                 if (!in_array($block_id, $block_user_ids)) {
                     array_push($block_user_ids, $block_id);
